@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Print Settings</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      max-width: 600px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 1rem;
+    }
+
+    input, select, button {
+      padding: 0.5rem;
+      font-size: 16px;
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 0.25rem;
+    }
+
+    .preview {
+      position: absolute;
+      width: 500px;
+      height: 400px;
+      left: 700px;
+      top: 100px;
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 24px;
+      overflow: hidden;
+      background: #f9f9f9;
+    }
+
+    .preview-text {
+      position: absolute;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Print Settings</h1>
+
+  <form id="fontForm">
+    <label for="fontFamily">Font Family</label>
+    <select id="fontFamily" name="fontFamily" style="margin-bottom: 10px;">
+      <option value="Coke">Coke</option>
+      <option value="Arial">Arial</option>
+      <option value="Verdana">Verdana</option>
+      <option value="Tahoma">Tahoma</option>
+      <option value="Trebuchet MS">Trebuchet MS</option>
+      <option value="Times New Roman">Times New Roman</option>
+      <option value="Georgia">Georgia</option>
+      <option value="Courier New">Courier New</option>
+      <option value="Lucida Console">Lucida Console</option>
+      <option value="Comic Sans MS">Comic Sans MS</option>
+      <option value="Impact">Impact</option>
+      <option value="Tajawal">Tajawal(Arabic)</option>
+    </select>
+
+    <label for="fontSize">Font Size (dots)</label>
+    <input type="number" id="fontSize" name="fontSize" value="30" min="10" max="200" />
+
+    <label for="x">X Position (^FOx)</label>
+    <input type="number" id="x" name="x" value="50" min="0" />
+
+    <label for="y">Y Position (^FOy)</label>
+    <input type="number" id="y" name="y" value="50" min="0" />
+
+    <div class="preview">
+      <div id="previewText" class="preview-text">Coke</div>
+    </div>
+
+    <button type="button" id="setDefaultBtn" style="margin-top: 1rem; background: #eee;">
+      Set to Default
+    </button>
+    <button type="submit">Save Settings</button>
+  </form>
+
+  <div>
+    <label for="excelFile">Import Excel File</label>
+    <input type="file" id="excelFile" accept=".xlsx, .xls" />
+    <button type="button" id="importBtn">Import Excel</button>
+  </div>
+
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+  <script>
+    const fontFamily = document.getElementById('fontFamily');
+    const fontSize = document.getElementById('fontSize');
+    const xInput = document.getElementById('x');
+    const yInput = document.getElementById('y');
+    const previewText = document.getElementById('previewText');
+
+    function updatePreview() {
+      previewText.style.fontFamily = fontFamily.value;
+      previewText.style.fontSize = fontSize.value + 'px';
+      previewText.style.left = xInput.value / 10 + 'px';
+      previewText.style.top = yInput.value / 10 + 'px';
+    }
+
+    fontFamily.addEventListener('change', updatePreview);
+    fontSize.addEventListener('input', updatePreview);
+    xInput.addEventListener('input', updatePreview);
+    yInput.addEventListener('input', updatePreview);
+
+    // Load current settings
+    fetch('/api/font-settings')
+      .then(res => res.json())
+      .then(data => {
+        fontFamily.value = data.fontFamily;
+        fontSize.value = data.fontSize;
+        xInput.value = data.x;
+        yInput.value = data.y;
+        updatePreview();
+      });
+
+    document.getElementById('fontForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      fetch('/api/font-settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fontFamily: fontFamily.value,
+          fontSize: parseInt(fontSize.value),
+          x: parseInt(xInput.value),
+          y: parseInt(yInput.value)
+        })
+      })
+      .then(res => res.json())
+      .then(data => alert('Settings saved!'));
+    });
+
+    const setDefaultBtn = document.getElementById('setDefaultBtn');
+
+    setDefaultBtn.addEventListener('click', () => {
+      fontFamily.value = 'Coke';
+      fontSize.value = 130;
+      xInput.value = 122;
+      yInput.value = 1870;
+      updatePreview();
+    });
+  </script>
+  <script>
+    const importBtn = document.getElementById('importBtn');
+    const excelFileInput = document.getElementById('excelFile');
+  
+    importBtn.addEventListener('click', () => {
+      const file = excelFileInput.files[0];
+      if (!file) {
+        alert('Please select an Excel file.');
+        return;
+      }
+  
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+  
+        const names = rows.flat().filter(cell => typeof cell === 'string' && cell.trim().length > 0);
+  
+        // Now send to server
+        fetch('/api/print_excel', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ names })
+        })
+        .then(res => res.json())
+        .then(data => {
+          alert('Names uploaded successfully!');
+          console.log(data);
+        })
+        .catch(err => {
+          console.error(err);
+          alert('Failed to upload names.');
+        });
+      };
+  
+      reader.readAsArrayBuffer(file);
+    });
+  </script>
+</body>
+</html>
