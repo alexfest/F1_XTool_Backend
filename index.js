@@ -1,8 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { printLabel } = require('./printer/zebra');
-const { generateZPL } = require('./utils/zplTemplate');
+const { printLabel } = require('./printer/xtool');
 const { readFontSettings, writeFontSettings } = require('./utils/settings');
 const path = require('path');
 
@@ -83,18 +82,6 @@ app.post('/api/print_excel', async (req, res) => {
   processQueue();
 
   res.status(200).json({ message: 'Print jobs queued successfully' });
-});
-
-// API to preview ZPL label
-app.get('/api/preview', (req, res) => {
-  const name = req.query.name;
-
-  if (!name) {
-    return res.status(400).json({ message: 'Name is required' });
-  }
-
-  const zpl = generateZPL(name);
-  res.status(200).send(zpl);
 });
 
 app.listen(PORT, () => {
