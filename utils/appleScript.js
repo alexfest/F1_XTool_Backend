@@ -6,22 +6,22 @@ function runAppleScriptForName(name) {
   return new Promise((resolve, reject) => {
     const scriptContent = `
 -- Simulate mouse click at 'Close' button
-do shell script "cliclick c:139,93"
-delay 1
+-- do shell script "cliclick c:139,93"
+-- delay 1
 
 -- Simulate mouse click at 'Do not Save'
-do shell script "cliclick c:585,566"
-delay 3
+-- do shell script "cliclick c:585,566"
+-- delay 3
 
 -- Set the paths
 set templatePath to "/Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/template.xcs"
 set pngPath to "Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/${name}.png"
 
 -- Step 1: Open the XCS template project
-do shell script "open -a 'xTool Creative Space' " & quoted form of templatePath
+-- do shell script "open -a 'xTool Creative Space' " & quoted form of templatePath
 
 -- Step 2: Wait for XCS to fully launch
-delay 7
+-- delay 7
 
 -- Define the target size
 set targetWidth to 1440
@@ -52,8 +52,9 @@ end tell
 -- Step 3: Import the PNG using Cmd+Shift+I and typing the file path
 tell application "System Events"
 	tell application process "xTool Creative Space"
-		set frontmost to true
-		delay 1
+		-- Press Command + N (New)
+		keystroke "n" using {command down}
+		delay 3
 
 		-- Press Command + I (Import)
 		keystroke "i" using {command down}
@@ -61,38 +62,44 @@ tell application "System Events"
 
 		-- Type the full path of the PNG
 		keystroke "/"
-        delay 1
+        delay 0.5
 
         --delay
         keystroke pngPath
-        delay 1
+        delay 0.5
 
         -- Press Return to confirm the path
 		keystroke return
-        delay 1
+        delay 0.5
 
         -- Press Return to confirm the import
 		keystroke return
-        delay 1
+        delay 0.5
 
 	end tell
 end tell
 
 -- Simulate mouse click at 'Trace' button
 do shell script "cliclick c:762,206"
-delay 1
+delay 0.25
 
 -- Simulate mouse click at 'Save' button
 do shell script "cliclick c:1410,867"
+delay 0.25
+
+
+-- Simulate mouse click at 'Y' button
+do shell script "cliclick c:396,195"
 delay 1
 
-
--- Simulate key press down 3 seconds
+-- Simulate type '50' for Height
 tell application "System Events"
-	repeat 30 times
-		key code 125 using {shift down}
-		delay 0.1 -- 50 × 0.1s = 5 seconds
-	end repeat
+	keystroke "100"
+    delay 1
+
+    -- Press Return to confirm the input
+    keystroke return
+    delay 1
 end tell
 
 -- Simulate mouse click at 'Center' of original Image
@@ -107,15 +114,21 @@ tell application "System Events"
 end tell
 
 -- Simulate mouse click at 'Center' of Traced Image
-do shell script "cliclick c:742,770"
+do shell script "cliclick c:707,869"
 delay 1
 
--- Simulate key press down 3 seconds
+-- Simulate mouse click at 'Y' button
+do shell script "cliclick c:396,195"
+delay 1
+
+-- Simulate type '50' for Height
 tell application "System Events"
-	repeat 30 times
-		key code 126 using {shift down}
-		delay 0.1 -- 50 × 0.1s = 5 seconds
-	end repeat
+	keystroke "50"
+    delay 1
+
+    -- Press Return to confirm the input
+    keystroke return
+    delay 1
 end tell
 
 -- Simulate mouse click at 'Engrave' button
