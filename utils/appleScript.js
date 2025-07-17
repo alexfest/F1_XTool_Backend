@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 
-function runAppleScriptForName(name) {
+function runAppleScriptForName(fileName, name) {
   return new Promise((resolve, reject) => {
     const scriptContent = `
 -- Simulate mouse click at 'Close' button
@@ -15,7 +15,7 @@ function runAppleScriptForName(name) {
 
 -- Set the paths
 set templatePath to "/Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/template.xcs"
-set pngPath to "Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/${name}.png"
+set pngPath to "Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/${fileName}.png"
 
 -- Step 1: Open the XCS template project
 -- do shell script "open -a 'xTool Creative Space' " & quoted form of templatePath
@@ -187,7 +187,7 @@ delay 0.5
 
 -- Simulate type '35' for Height
 tell application "System Events"
-	keystroke "35"
+	keystroke "${name.length > 4 ? 35 - (name.length - 4) * 4 : 35}"
     delay 0.5
 
     -- Press Return to confirm the input

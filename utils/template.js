@@ -149,7 +149,7 @@ async function generateTemplatePNG(name) {
     const canvasHeight = Math.ceil(textHeight + margin * 2);
     
     const real_filename = await renderTextWithScreenshot(fontFamily, fontSize, canvasWidth, canvasHeight, name);
-    runAppleScriptForName(real_filename)
+    runAppleScriptForName(real_filename, name)
     .then(output => console.log("Success:", output))
     .catch(err => console.error("Error:", err));
 
