@@ -15,7 +15,7 @@ function runAppleScriptForName(fileName, name) {
 
 -- Set the paths
 set templatePath to "/Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/template.xcs"
-set pngPath to "Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/${fileName}.png"
+set pngPath to "Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/${fileName}"
 
 -- Step 1: Open the XCS template project
 -- do shell script "open -a 'xTool Creative Space' " & quoted form of templatePath
