@@ -1,0 +1,132 @@
+-- Set the paths
+set templatePath to "/Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/template.xcs"
+set pngPath to "Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/Alex.png"
+
+-- Step 1: Open the XCS template project
+do shell script "open -a 'xTool Creative Space' " & quoted form of templatePath
+
+-- Step 2: Wait for XCS to fully launch
+delay 7
+
+-- Define the target size
+set targetWidth to 1440
+set targetHeight to 900
+
+-- Get the main screen size
+tell application "Finder"
+	set screenBounds to bounds of window of desktop
+end tell
+
+set screenWidth to item 3 of screenBounds
+set screenHeight to item 4 of screenBounds
+
+-- Calculate centered position
+set posX to (screenWidth - targetWidth) / 2
+set posY to (screenHeight - targetHeight) / 2
+
+-- Resize and reposition the XCS window
+tell application "System Events"
+	tell application process "xTool Creative Space"
+		set frontmost to true
+		delay 1
+		set position of front window to {posX, posY}
+		set size of front window to {targetWidth, targetHeight}
+	end tell
+end tell
+
+-- Step 3: Import the PNG using Cmd+Shift+I and typing the file path
+tell application "System Events"
+	tell application process "xTool Creative Space"
+		set frontmost to true
+		delay 1
+
+		-- Press Command + I (Import)
+		keystroke "i" using {command down}
+		delay 2
+
+		-- Type the full path of the PNG
+		keystroke "/"
+        delay 1
+
+        --delay
+        keystroke pngPath
+        delay 1
+
+        -- Press Return to confirm the path
+		keystroke return
+        delay 1
+
+        -- Press Return to confirm the import
+		keystroke return
+        delay 1
+
+	end tell
+end tell
+
+-- Simulate mouse click at 'Trace' button
+do shell script "cliclick c:762,206"
+delay 1
+
+-- Simulate mouse click at 'Save' button
+do shell script "cliclick c:1410,867"
+delay 1
+
+
+-- Simulate key press down 3 seconds
+tell application "System Events"
+	repeat 30 times
+		key code 125 using {shift down}
+		delay 0.1 -- 50 × 0.1s = 5 seconds
+	end repeat
+end tell
+
+-- Simulate mouse click at 'Center' of original Image
+do shell script "cliclick c:742,566"
+delay 1
+
+
+-- Simulate Del keyboard
+tell application "System Events"
+	key code 51
+    delay 1
+end tell
+
+-- Simulate mouse click at 'Center' of Traced Image
+do shell script "cliclick c:742,770"
+delay 1
+
+-- Simulate key press down 3 seconds
+tell application "System Events"
+	repeat 30 times
+		key code 126 using {shift down}
+		delay 0.1 -- 50 × 0.1s = 5 seconds
+	end repeat
+end tell
+
+-- Simulate mouse click at 'Engrave' button
+do shell script "cliclick c:1439,386"
+delay 
+
+-- Simulate mouse click at 'Unknown Material' button
+do shell script "cliclick c:1475,139"
+delay 1
+
+-- Simulate mouse click at 'Select Material' button
+do shell script "cliclick c:718,506"
+delay 1
+
+-- Simulate mouse click at 'Save' button
+do shell script "cliclick c:1097,753"
+delay 1
+
+-- Simulate mouse click at 'Laser Type' button
+do shell script "cliclick c:1521,575"
+delay 1
+
+-- Simulate mouse click at 'IR' button
+do shell script "cliclick c:1410,631"
+delay 1
+
+-- Simulate mouse click at 'Frame' button
+do shell script "cliclick c:1424,900"
+delay 1

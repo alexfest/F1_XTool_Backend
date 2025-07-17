@@ -8,7 +8,7 @@ const settingsPath = path.join(process.cwd(), 'public', 'font-settings.json');
 function readFontSettings() {
   if (!fs.existsSync(settingsPath)) {
     // Default values if file doesn't exist
-    const defaultSettings = { fontFamily: 'Coke', fontSize: 130, x: 122, y: 1870 };
+    const defaultSettings = { fontFamily: 'Coke', fontSize: 100, x: 122, y: 1870 };
 
     // Ensure directory exists
     fs.mkdirSync(path.dirname(settingsPath), { recursive: true });

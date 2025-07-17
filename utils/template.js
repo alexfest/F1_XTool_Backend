@@ -3,6 +3,7 @@ const { createCanvas } = require('canvas');
 const fs = require('fs');
 const path = require('path');
 const { PNG } = require('pngjs');
+const { runAppleScriptForName } = require('./appleScript');
 const { readFontSettings } = require('./settings');
 
 async function renderTextWithScreenshot(fontFamily, fontSize, canvasWidth, canvasHeight, name) {
@@ -104,18 +105,25 @@ async function renderTextWithScreenshot(fontFamily, fontSize, canvasWidth, canva
 
   // Optional: save preview image
   const outputDir = path.join(__dirname, '../output');
-    if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true }); // create directory if it doesn't exist
-    }
+  if (!fs.existsSync(outputDir)) {
+  fs.mkdirSync(outputDir, { recursive: true }); // create directory if it doesn't exist
+  }
 
-    const outputPath = path.join(outputDir, `${name}.png`);
-    fs.writeFileSync(outputPath, screenshot);
+  const timestamp = new Date().toISOString()
+  .replace(/[-T:]/g, '')
+  .split('.')[0]; // removes milliseconds and timezone
+  const formatted = `${timestamp.slice(0, 8)}_${timestamp.slice(8)}`;
+  const real_filename = `${formatted}_${name}`;
+  
+
+  const outputPath = path.join(outputDir, `${real_filename}.png`);
+  fs.writeFileSync(outputPath, screenshot);
 
   // Parse screenshot as PNG and extract RGBA data
-  const png = PNG.sync.read(screenshot);
-  const rgbaData = png.data; // This is a Buffer in RGBA format (Uint8Array)
+  // const png = PNG.sync.read(screenshot);
+  // const rgbaData = png.data; // This is a Buffer in RGBA format (Uint8Array)
 
-  return {rgbaData};
+  return real_filename;
 }
 
 async function generateTemplatePNG(name) {
@@ -140,7 +148,10 @@ async function generateTemplatePNG(name) {
     const canvasWidth = Math.ceil(textWidth + margin * 2);
     const canvasHeight = Math.ceil(textHeight + margin * 2);
     
-    const {rgbaData} = await renderTextWithScreenshot(fontFamily, fontSize, canvasWidth, canvasHeight, name);
+    const real_filename = await renderTextWithScreenshot(fontFamily, fontSize, canvasWidth, canvasHeight, name);
+    runAppleScriptForName(real_filename)
+    .then(output => console.log("Success:", output))
+    .catch(err => console.error("Error:", err));
 
 
   } catch (error) {
