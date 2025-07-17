@@ -53,8 +53,19 @@ end tell
 tell application "System Events"
 	tell application process "xTool Creative Space"
 		-- Press Command + N (New)
-		keystroke "n" using {command down}
-		delay 3
+		-- keystroke "n" using {command down}
+		-- delay 3
+
+    -- Simulate mouse click at 'Center' of original Image
+    do shell script "cliclick c:730,571"
+    delay 0.8
+
+
+    -- Simulate Del keyboard
+    tell application "System Events"
+      key code 51
+        delay 0.8
+    end tell
 
 		-- Press Command + I (Import)
 		keystroke "i" using {command down}
@@ -84,12 +95,12 @@ do shell script "cliclick c:1439,386"
 delay 0.8
 
 -- Simulate mouse click at 'Unknown Material' button
-do shell script "cliclick c:1475,139"
-delay 0.8
+-- do shell script "cliclick c:1475,139"
+-- delay 0.8
 
 -- Simulate mouse click at 'Select Material' button
-do shell script "cliclick c:718,506"
-delay 0.8
+-- do shell script "cliclick c:718,506"
+-- delay 0.8
 
 -- Simulate mouse click at 'Save' button
 do shell script "cliclick c:1097,753"
