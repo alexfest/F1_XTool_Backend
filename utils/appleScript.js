@@ -74,7 +74,7 @@ tell application "System Events"
 
         -- Press Return to confirm the import
 		keystroke return
-        delay 1
+        delay 1.5
 
 	end tell
 end tell
