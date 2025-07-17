@@ -43,7 +43,7 @@ set posY to (screenHeight - targetHeight) / 2
 tell application "System Events"
 	tell application process "xTool Creative Space"
 		set frontmost to true
-		delay 0.7
+		delay 0.8
 		set position of front window to {posX, posY}
 		set size of front window to {targetWidth, targetHeight}
 	end tell
@@ -62,7 +62,7 @@ tell application "System Events"
 
 		-- Type the full path of the PNG
 		keystroke "/"
-        delay 0.7
+        delay 0.8
 
         --delay
         keystroke pngPath
@@ -90,114 +90,114 @@ delay 2
 
 -- Simulate mouse click at 'Y' button
 do shell script "cliclick c:393,187"
-delay 0.7
+delay 0.8
 
 -- Simulate type '50' for Height
 tell application "System Events"
 	keystroke "100"
-    delay 0.7
+    delay 0.8
 
     -- Press Return to confirm the input
     keystroke return
-    delay 0.7
+    delay 0.8
 end tell
 
 -- Simulate mouse click at 'Center' of original Image
 do shell script "cliclick c:742,566"
-delay 0.7
+delay 0.8
 
 
 -- Simulate Del keyboard
 tell application "System Events"
 	key code 51
-    delay 0.7
+    delay 0.8
 end tell
 
 -- Simulate mouse click at 'Center' of Traced Image
 do shell script "cliclick c:707,869"
-delay 0.7
+delay 0.8
 
 -- Simulate mouse click at 'Y' button
 do shell script "cliclick c:396,195"
-delay 0.7
+delay 0.8
 
 -- Simulate type '50' for Height
 tell application "System Events"
 	keystroke "50"
-    delay 0.7
+    delay 0.8
 
     -- Press Return to confirm the input
     keystroke return
-    delay 0.7
+    delay 0.8
 end tell
 
 -- Simulate mouse click at 'Engrave' button
 do shell script "cliclick c:1439,386"
-delay 0.7
+delay 0.8
 
 -- Simulate mouse click at 'Unknown Material' button
 do shell script "cliclick c:1475,139"
-delay 0.7
+delay 0.8
 
 -- Simulate mouse click at 'Select Material' button
 do shell script "cliclick c:718,506"
-delay 0.7
+delay 0.8
 
 -- Simulate mouse click at 'Save' button
 do shell script "cliclick c:1097,753"
-delay 0.7
+delay 0.8
 
 -- Simulate mouse click at 'Laser Type' button
 do shell script "cliclick c:1521,575"
-delay 0.7
+delay 0.8
 
 -- Simulate mouse click at 'IR' button
 do shell script "cliclick c:1410,631"
-delay 0.7
+delay 0.8
 
 -- Simulate mouse click at 'Speed' button
 do shell script "cliclick c:1332,676"
-delay 0.7
+delay 0.8
 
 -- Simulate mouse click at 'LinesPerCM' button
 do shell script "cliclick c:1521,749"
-delay 0.7
+delay 0.8
 
 -- Simulate mouse click at '220' button
 do shell script "cliclick c:1424,596"
-delay 0.7
+delay 0.8
 
 -- Simulate mouse click at 'Height' button
 do shell script "cliclick c:398,223"
-delay 0.7
+delay 0.8
 
 -- Simulate type '15' for Height
 tell application "System Events"
 	keystroke "15"
-    delay 0.7
+    delay 0.8
 
     -- Press Return to confirm the input
     keystroke return
-    delay 0.7
+    delay 0.8
 end tell
 
 -- Simulate mouse click at 'X' button
 do shell script "cliclick c:259,186"
-delay 0.7
+delay 0.8
 
 -- Simulate type '35' for Height
 tell application "System Events"
 	keystroke "${name.length > 4 ? 35 - (name.length - 4) * 6 : 35}"
-    delay 0.7
+    delay 0.8
 
     -- Press Return to confirm the input
     keystroke return
-    delay 0.7
+    delay 0.8
 end tell
 
 -- Simulate mouse click at 'Frame' button
 do shell script "cliclick c:1424,900"
-delay 0.7
+delay 0.8
 `;
 
     const tempFilePath = path.join(__dirname, `temp_${Date.now()}.scpt`);
