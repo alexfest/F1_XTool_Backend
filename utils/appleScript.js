@@ -23,10 +23,29 @@ set pngPath to "Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/${name}.s
 -- Step 2: Wait for XCS to fully launch
 -- delay 7
 
+-- Define the target size
+set targetWidth to 1440
+set targetHeight to 900
+
+-- Get the main screen size
+tell application "Finder"
+	set screenBounds to bounds of window of desktop
+end tell
+
+set screenWidth to item 3 of screenBounds
+set screenHeight to item 4 of screenBounds
+
+-- Calculate centered position
+set posX to (screenWidth - targetWidth) / 2
+set posY to (screenHeight - targetHeight) / 2
+
+-- Resize and reposition the XCS window
 tell application "System Events"
 	tell application process "xTool Creative Space"
 		set frontmost to true
-		delay 0.8
+		delay 0.5
+		set position of front window to {posX, posY}
+		set size of front window to {targetWidth, targetHeight}
 	end tell
 end tell
 
@@ -39,13 +58,13 @@ tell application "System Events"
 
     -- Simulate mouse click at 'Center' of original Image
     do shell script "cliclick c:730,571"
-    delay 0.8
+    delay 0.5
 
 
     -- Simulate Del keyboard
     tell application "System Events"
       key code 51
-        delay 0.8
+        delay 0.5
     end tell
 
 		-- Press Command + I (Import)
@@ -54,7 +73,7 @@ tell application "System Events"
 
 		-- Type the full path of the PNG
 		keystroke "/"
-        delay 0.8
+        delay 0.5
 
         --delay
         keystroke pngPath
@@ -73,85 +92,85 @@ end tell
 
 -- Simulate mouse click at 'Engrave' button
 do shell script "cliclick c:1439,386"
-delay 0.8
+delay 0.5
 
 -- Simulate mouse click at 'Unknown Material' button
 -- do shell script "cliclick c:1475,139"
--- delay 0.8
+-- delay 0.5
 
 -- Simulate mouse click at 'Select Material' button
 -- do shell script "cliclick c:718,506"
--- delay 0.8
+-- delay 0.5
 
 -- Simulate mouse click at 'Save' button
 -- do shell script "cliclick c:1097,753"
--- delay 0.8
+-- delay 0.5
 
 -- Simulate mouse click at 'Laser Type' button
 do shell script "cliclick c:1521,575"
-delay 0.8
+delay 0.5
 
 -- Simulate mouse click at 'IR' button
 do shell script "cliclick c:1410,631"
-delay 0.8
+delay 0.5
 
 -- Simulate mouse click at 'Speed' button
 -- do shell script "cliclick c:1332,676"
--- delay 0.8
+-- delay 0.5
 
 -- Simulate mouse click at 'LinesPerCM' button
 -- do shell script "cliclick c:1521,749"
--- delay 0.8
+-- delay 0.5
 
 -- Simulate mouse click at '220' button
 -- do shell script "cliclick c:1424,596"
--- delay 0.8
+-- delay 0.5
 
 -- Simulate mouse click at 'Height' button
 do shell script "cliclick c:398,223"
-delay 0.8
+delay 0.5
 
 -- Simulate type '15' for Height
 tell application "System Events"
 	keystroke "15"
-    delay 0.8
+    delay 0.5
 
     -- Press Return to confirm the input
     keystroke return
-    delay 0.8
+    delay 0.5
 end tell
 
 -- Simulate mouse click at 'X' button
 do shell script "cliclick c:245,188"
-delay 0.8
+delay 0.5
 
 -- Simulate type '35' for Height
 tell application "System Events"
 	keystroke "${name.length > 4 ? 35 - (name.length - 4) * 6 : 35}"
-    delay 0.8
+    delay 0.5
 
     -- Press Return to confirm the input
     keystroke return
-    delay 0.8
+    delay 0.5
 end tell
 
 -- Simulate mouse click at 'Y' button
 do shell script "cliclick c:396,195"
-delay 0.8
+delay 0.5
 
 -- Simulate type '50' for Height
 tell application "System Events"
 	keystroke "50"
-    delay 0.8
+    delay 0.5
 
     -- Press Return to confirm the input
     keystroke return
-    delay 0.8
+    delay 0.5
 end tell
 
 -- Simulate mouse click at 'Frame' button
 do shell script "cliclick c:1424,900"
-delay 0.8
+delay 0.5
 `;
 
     const tempFilePath = path.join(__dirname, `temp_${Date.now()}.scpt`);
