@@ -182,7 +182,7 @@ tell application "System Events"
 end tell
 
 -- Simulate mouse click at 'X' button
-do shell script "cliclick c:259,186"
+do shell script "cliclick c:245,188"
 delay 0.8
 
 -- Simulate type '35' for Height
