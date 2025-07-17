@@ -79,58 +79,6 @@ tell application "System Events"
 	end tell
 end tell
 
--- Simulate mouse click at 'Trace' button
-do shell script "cliclick c:767,197"
-delay 2
-
--- Simulate mouse click at 'Save' button
-do shell script "cliclick c:1427,862"
-delay 2
-
-
--- Simulate mouse click at 'Y' button
-do shell script "cliclick c:393,187"
-delay 0.8
-
--- Simulate type '50' for Height
-tell application "System Events"
-	keystroke "100"
-    delay 0.8
-
-    -- Press Return to confirm the input
-    keystroke return
-    delay 0.8
-end tell
-
--- Simulate mouse click at 'Center' of original Image
-do shell script "cliclick c:742,566"
-delay 0.8
-
-
--- Simulate Del keyboard
-tell application "System Events"
-	key code 51
-    delay 0.8
-end tell
-
--- Simulate mouse click at 'Center' of Traced Image
-do shell script "cliclick c:707,869"
-delay 0.8
-
--- Simulate mouse click at 'Y' button
-do shell script "cliclick c:396,195"
-delay 0.8
-
--- Simulate type '50' for Height
-tell application "System Events"
-	keystroke "50"
-    delay 0.8
-
-    -- Press Return to confirm the input
-    keystroke return
-    delay 0.8
-end tell
-
 -- Simulate mouse click at 'Engrave' button
 do shell script "cliclick c:1439,386"
 delay 0.8
