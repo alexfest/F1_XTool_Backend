@@ -66,15 +66,15 @@ tell application "System Events"
 
         --delay
         keystroke pngPath
-        delay 0.5
+        delay 1
 
         -- Press Return to confirm the path
 		keystroke return
-        delay 0.5
+        delay 1
 
         -- Press Return to confirm the import
 		keystroke return
-        delay 0.5
+        delay 1
 
 	end tell
 end tell
