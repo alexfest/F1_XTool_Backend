@@ -81,36 +81,36 @@ end tell
 
 -- Simulate mouse click at 'Trace' button
 do shell script "cliclick c:762,206"
-delay 0.25
+delay 0.5
 
 -- Simulate mouse click at 'Save' button
 do shell script "cliclick c:1410,867"
-delay 0.25
+delay 0.5
 
 
 -- Simulate mouse click at 'Y' button
 do shell script "cliclick c:396,195"
-delay 1
+delay 0.5
 
 -- Simulate type '50' for Height
 tell application "System Events"
 	keystroke "100"
-    delay 1
+    delay 0.5
 
     -- Press Return to confirm the input
     keystroke return
-    delay 1
+    delay 0.5
 end tell
 
 -- Simulate mouse click at 'Center' of original Image
 do shell script "cliclick c:742,566"
-delay 1
+delay 0.5
 
 
 -- Simulate Del keyboard
 tell application "System Events"
 	key code 51
-    delay 1
+    delay 0.5
 end tell
 
 -- Simulate mouse click at 'Center' of Traced Image
