@@ -187,7 +187,7 @@ delay 0.7
 
 -- Simulate type '35' for Height
 tell application "System Events"
-	keystroke "${name.length > 4 ? 35 - (name.length - 4) * 4 : 35}"
+	keystroke "${name.length > 4 ? 35 - (name.length - 4) * 6 : 35}"
     delay 0.7
 
     -- Press Return to confirm the input
