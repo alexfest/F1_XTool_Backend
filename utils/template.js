@@ -110,9 +110,9 @@ async function generateTemplatePNG(name) {
     const OUTPUT   = path.join(outputDir, `${name}.svg`);
     const real_filename = await renderTextWithScreenshot(name, fontSize, canvasWidth, canvasHeight, OUTPUT);
 
-    // runAppleScriptForName(real_filename, name)
-    // .then(output => console.log("Success:", output))
-    // .catch(err => console.error("Error:", err));
+    runAppleScriptForName(real_filename, name)
+    .then(output => console.log("Success:", output))
+    .catch(err => console.error("Error:", err));
 
 
   } catch (error) {
