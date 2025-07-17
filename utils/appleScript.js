@@ -84,7 +84,7 @@ do shell script "cliclick c:762,206"
 delay 0.5
 
 -- Simulate mouse click at 'Save' button
-do shell script "cliclick c:1410,867"
+do shell script "cliclick c:1427,862"
 delay 0.5
 
 
