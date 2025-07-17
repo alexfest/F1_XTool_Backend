@@ -23,6 +23,13 @@ set pngPath to "Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/${name}.s
 -- Step 2: Wait for XCS to fully launch
 -- delay 7
 
+tell application "System Events"
+	tell application process "xTool Creative Space"
+		set frontmost to true
+		delay 0.8
+	end tell
+end tell
+
 -- Step 3: Import the PNG using Cmd+Shift+I and typing the file path
 tell application "System Events"
 	tell application process "xTool Creative Space"
