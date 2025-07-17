@@ -5,6 +5,14 @@ const { exec } = require('child_process');
 function runAppleScriptForName(name) {
   return new Promise((resolve, reject) => {
     const scriptContent = `
+-- Simulate mouse click at 'Close' button
+do shell script "cliclick c:139,93"
+delay 1
+
+-- Simulate mouse click at 'Do not Save'
+do shell script "cliclick c:585,566"
+delay 3
+
 -- Set the paths
 set templatePath to "/Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/template.xcs"
 set pngPath to "Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/${name}.png"
@@ -133,6 +141,60 @@ delay 1
 -- Simulate mouse click at 'IR' button
 do shell script "cliclick c:1410,631"
 delay 1
+
+-- Simulate mouse click at 'Speed' button
+do shell script "cliclick c:1332,676"
+delay 1
+
+-- Simulate mouse click at 'LinesPerCM' button
+do shell script "cliclick c:1521,749"
+delay 1
+
+-- Simulate mouse click at '220' button
+do shell script "cliclick c:1424,596"
+delay 1
+
+-- Simulate mouse click at 'Height' button
+do shell script "cliclick c:398,223"
+delay 1
+
+-- Simulate type '15' for Height
+tell application "System Events"
+	keystroke "15"
+    delay 1
+
+    -- Press Return to confirm the input
+    keystroke return
+    delay 1
+end tell
+
+-- Simulate mouse click at 'X' button
+do shell script "cliclick c:259,186"
+delay 1
+
+-- Simulate type '35' for Height
+tell application "System Events"
+	keystroke "35"
+    delay 1
+
+    -- Press Return to confirm the input
+    keystroke return
+    delay 1
+end tell
+
+-- Simulate mouse click at 'Y' button
+do shell script "cliclick c:396,195"
+delay 1
+
+-- Simulate type '50' for Height
+tell application "System Events"
+	keystroke "50"
+    delay 1
+
+    -- Press Return to confirm the input
+    keystroke return
+    delay 1
+end tell
 
 -- Simulate mouse click at 'Frame' button
 do shell script "cliclick c:1424,900"
