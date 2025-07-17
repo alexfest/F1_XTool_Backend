@@ -36,7 +36,7 @@ async function renderTextWithScreenshot(TEXT, FONTSIZE, W, H, OUTPUT) {
   const outlineT2S = TextToSVG.loadSync(OUT_TTF);
 
   // get raw path data
-  const opts = { x: 0, y: FONTSIZE, fontSize: FONTSIZE };
+  const opts = { x: 20, y: FONTSIZE, fontSize: FONTSIZE };
   const dFill    = fillT2S.getD(TEXT, opts);
   const dOutline = outlineT2S.getD(TEXT, opts);
 
@@ -85,7 +85,7 @@ async function generateTemplatePNG(name) {
     const fontFamily = settings.fontFamily;
     const originX = parseInt(settings.x);
     const originY = parseInt(settings.y);
-    const margin = 30;
+    const margin = 50;
 
     
     // Temporary canvas to measure text
