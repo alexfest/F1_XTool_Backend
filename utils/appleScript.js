@@ -23,32 +23,6 @@ set pngPath to "Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/${name}.s
 -- Step 2: Wait for XCS to fully launch
 -- delay 7
 
--- Define the target size
-set targetWidth to 1440
-set targetHeight to 900
-
--- Get the main screen size
-tell application "Finder"
-	set screenBounds to bounds of window of desktop
-end tell
-
-set screenWidth to item 3 of screenBounds
-set screenHeight to item 4 of screenBounds
-
--- Calculate centered position
-set posX to (screenWidth - targetWidth) / 2
-set posY to (screenHeight - targetHeight) / 2
-
--- Resize and reposition the XCS window
-tell application "System Events"
-	tell application process "xTool Creative Space"
-		set frontmost to true
-		delay 0.8
-		set position of front window to {posX, posY}
-		set size of front window to {targetWidth, targetHeight}
-	end tell
-end tell
-
 -- Step 3: Import the PNG using Cmd+Shift+I and typing the file path
 tell application "System Events"
 	tell application process "xTool Creative Space"
