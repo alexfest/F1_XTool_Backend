@@ -103,8 +103,8 @@ delay 0.8
 -- delay 0.8
 
 -- Simulate mouse click at 'Save' button
-do shell script "cliclick c:1097,753"
-delay 0.8
+-- do shell script "cliclick c:1097,753"
+-- delay 0.8
 
 -- Simulate mouse click at 'Laser Type' button
 do shell script "cliclick c:1521,575"
