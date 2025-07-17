@@ -104,16 +104,16 @@ do shell script "cliclick c:1410,631"
 delay 0.8
 
 -- Simulate mouse click at 'Speed' button
-do shell script "cliclick c:1332,676"
-delay 0.8
+-- do shell script "cliclick c:1332,676"
+-- delay 0.8
 
 -- Simulate mouse click at 'LinesPerCM' button
-do shell script "cliclick c:1521,749"
-delay 0.8
+-- do shell script "cliclick c:1521,749"
+-- delay 0.8
 
 -- Simulate mouse click at '220' button
-do shell script "cliclick c:1424,596"
-delay 0.8
+-- do shell script "cliclick c:1424,596"
+-- delay 0.8
 
 -- Simulate mouse click at 'Height' button
 do shell script "cliclick c:398,223"
@@ -136,6 +136,20 @@ delay 0.8
 -- Simulate type '35' for Height
 tell application "System Events"
 	keystroke "${name.length > 4 ? 35 - (name.length - 4) * 6 : 35}"
+    delay 0.8
+
+    -- Press Return to confirm the input
+    keystroke return
+    delay 0.8
+end tell
+
+-- Simulate mouse click at 'Y' button
+do shell script "cliclick c:396,195"
+delay 0.8
+
+-- Simulate type '50' for Height
+tell application "System Events"
+	keystroke "50"
     delay 0.8
 
     -- Press Return to confirm the input
