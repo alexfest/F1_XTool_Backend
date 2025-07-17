@@ -1,77 +1,81 @@
-const puppeteer = require('puppeteer');
-const { createCanvas } = require('canvas');
+// test.js
 const fs = require('fs');
 const path = require('path');
-const { PNG } = require('pngjs');
+const { createCanvas } = require('canvas');
+const TextToSVG = require('text-to-svg');
+const { JSDOM } = require('jsdom');
+
+// —— POLYFILL DOM FOR PAPER.JS ——
+const dom = new JSDOM(`<!DOCTYPE html><body></body>`);
+global.window        = dom.window;
+global.document      = dom.window.document;
+global.DOMParser     = dom.window.DOMParser;
+global.XMLSerializer = dom.window.XMLSerializer;
+global.Node          = dom.window.Node;
+global.navigator     = { userAgent: 'node.js' };
+
+const paper = require('paper');
+
+// —— CONFIG ——
+// const OUTPUT   = path.join(__dirname, 'coke.svg');
+// const TEXT     = 'Mohammed';
+// const W        = 700;
+// const H        = 200;
+// const FONTSIZE = 120;
+const FILL_TTF = path.join(__dirname, '../fonts/CokeR.ttf');
+const OUT_TTF  = path.join(__dirname, '../fonts/CokeOutline.ttf');
+// ——————————
+
+
 const { runAppleScriptForName } = require('./appleScript');
 const { readFontSettings } = require('./settings');
 
-async function renderTextWithScreenshot(fontPath, fontOutlinePath, outputDir, fontSize, canvasWidth, canvasHeight, name) {
-   // Step 1: Read and encode font file
-   const fontData = fs.readFileSync(fontPath);
-   const fontOutlineData = fs.readFileSync(fontOutlinePath);
-   const fontBase64 = fontData.toString('base64');
-   const fontOutlineBase64 = fontOutlineData.toString('base64');
+async function renderTextWithScreenshot(TEXT, FONTSIZE, W, H, OUTPUT) {
+   // load fonts
+  const fillT2S    = TextToSVG.loadSync(FILL_TTF);
+  const outlineT2S = TextToSVG.loadSync(OUT_TTF);
 
-   const fontFamily = "test";
-   const fontOutlineFamily = "testOutline";
- 
-   // Step 2: Sanitize name
-   const escapedName = name.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
- 
-   // Step 3: Build SVG
-   const svg = `
- <svg xmlns="http://www.w3.org/2000/svg" width="${canvasWidth}" height="${canvasHeight}">
-   <defs>
-     <style type="text/css">
-       @font-face {
-         font-family: '${fontFamily}';
-         src: url('data:font/ttf;base64,${fontBase64}') format('truetype');
-       }
-       @font-face {
-         font-family: '${fontOutlineFamily}';
-         src: url('data:font/ttf;base64,${fontOutlineBase64}') format('truetype');
-       }
-       .outline {
-        font-family: '${fontOutlineFamily}';
-        font-size: 150px;
-        text-anchor: middle;
-        dominant-baseline: middle;
-        stroke: black;
-        stroke-width: 3px;
-        fill: black;
-      }
+  // get raw path data
+  const opts = { x: 0, y: FONTSIZE, fontSize: FONTSIZE };
+  const dFill    = fillT2S.getD(TEXT, opts);
+  const dOutline = outlineT2S.getD(TEXT, opts);
 
-      .fill {
-        font-family: '${fontFamily}';
-        font-size: 150px;
-        text-anchor: middle;
-        dominant-baseline: middle;
-        fill: white;
-      }
-     </style>
-   </defs>
-     <!-- Draw outline first -->
-    <text x="50%" y="50%" class="outline">${escapedName}</text>
+  // paper setup
+  const canvas = createCanvas(W, H);
+  paper.setup(canvas);
 
-    <!-- Draw fill on top -->
-    <text x="50%" y="50%" class="fill">${escapedName}</text>
- </svg>
- `;
- 
-   // Step 4: Save SVG
-   if (!fs.existsSync(outputDir)) {
-     fs.mkdirSync(outputDir, { recursive: true });
-   }
- 
-   const timestamp = new Date().toISOString().replace(/[-T:]/g, '').split('.')[0];
-   const formattedName = `${timestamp}_${name.replace(/\s+/g, '_')}.svg`;
- 
-   const outputPath = path.join(outputDir, formattedName);
-   fs.writeFileSync(outputPath, svg);
-   console.log(`✅ SVG saved at: ${outputPath}`);
- 
-   return outputPath;
+  // import each as a Group with a single <path>
+  const grpOut = paper.project.importSVG(
+    `<svg xmlns="http://www.w3.org/2000/svg"><path d="${dOutline}"/></svg>`
+  );
+  const grpFill = paper.project.importSVG(
+    `<svg xmlns="http://www.w3.org/2000/svg"><path d="${dFill}"/></svg>`
+  );
+
+  // extract the actual Path item
+  const outlinePath = grpOut.children[0];
+  const fillPath    = grpFill.children[0];
+
+  // do the subtraction
+  const result = outlinePath.subtract(fillPath);
+
+  // grab the combined "d"
+  const finalD = result.pathData;
+
+  // write single-path SVG
+  const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">
+  <path
+    d="${finalD}"
+    fill="#000000"
+    stroke="#000"
+    stroke-width="0"
+    fill-rule="evenodd"
+  />
+</svg>
+`;
+  fs.writeFileSync(OUTPUT, svg, 'utf8');
+  console.log(`✅ Written single-path SVG to ${OUTPUT}`);
 }
 
 async function generateTemplatePNG(name) {
@@ -100,10 +104,13 @@ async function generateTemplatePNG(name) {
     const fontOutlinePath = path.join(__dirname, '../public/Coke-Outline.ttf'); // Your font file
     const outputDir = path.join(__dirname, '../output');
     
-    const real_filename = await renderTextWithScreenshot(fontPath, fontOutlinePath, outputDir, fontSize, canvasWidth, canvasHeight, name);
-    runAppleScriptForName(real_filename, name)
-    .then(output => console.log("Success:", output))
-    .catch(err => console.error("Error:", err));
+    //const real_filename = await renderTextWithScreenshot(fontPath, fontOutlinePath, outputDir, fontSize, canvasWidth, canvasHeight, name);
+    const OUTPUT   = path.join(outputDir, `${name}.svg`);
+    const real_filename = await renderTextWithScreenshot(name, fontSize, canvasWidth, canvasHeight, OUTPUT);
+
+    // runAppleScriptForName(real_filename, name)
+    // .then(output => console.log("Success:", output))
+    // .catch(err => console.error("Error:", err));
 
 
   } catch (error) {
