@@ -76,6 +76,8 @@ async function renderTextWithScreenshot(TEXT, FONTSIZE, W, H, OUTPUT) {
 `;
   fs.writeFileSync(OUTPUT, svg, 'utf8');
   console.log(`✅ Written single-path SVG to ${OUTPUT}`);
+
+  return OUTPUT;
 }
 
 async function generateTemplatePNG(name) {
