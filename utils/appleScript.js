@@ -81,11 +81,11 @@ end tell
 
 -- Simulate mouse click at 'Trace' button
 do shell script "cliclick c:767,197"
-delay 1
+delay 2
 
 -- Simulate mouse click at 'Save' button
 do shell script "cliclick c:1427,862"
-delay 1
+delay 2
 
 
 -- Simulate mouse click at 'Y' button
