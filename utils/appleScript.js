@@ -170,7 +170,15 @@ end tell
 
 -- Simulate mouse click at 'Frame' button
 do shell script "cliclick c:1424,900"
-delay 0.5
+delay 1
+
+-- Simulate mouse click at 'Process' button
+do shell script "cliclick c:1454,946"
+delay 2
+
+-- Simulate mouse click at 'Start' button
+do shell script "cliclick c:1520,143"
+delay 1
 `;
 
     const tempFilePath = path.join(__dirname, `temp_${Date.now()}.scpt`);
