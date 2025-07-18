@@ -115,7 +115,7 @@ do shell script "cliclick c:1410,631"
 delay 0.5
 
 -- Simulate mouse click at 'Speed' button
-do shell script "cliclick c:1332,676"
+do shell script "cliclick c:1340,677"
 delay 0.5
 
 -- Simulate mouse click at 'LinesPerCM' button
