@@ -102,15 +102,14 @@ async function generateTemplatePNG(name) {
     const canvasWidth = Math.ceil(textWidth + margin * 2);
     const canvasHeight = Math.ceil(textHeight + margin * 2);
 
-    const fontPath = path.join(__dirname, '../public/Coke-Regular.ttf'); // Your font file
-    const fontOutlinePath = path.join(__dirname, '../public/Coke-Outline.ttf'); // Your font file
-    const outputDir = path.join(__dirname, '../output');
+    const outputDir = path.join(process.cwd(), 'output'); // or /tmp
+    if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
     
     //const real_filename = await renderTextWithScreenshot(fontPath, fontOutlinePath, outputDir, fontSize, canvasWidth, canvasHeight, name);
     const OUTPUT   = path.join(outputDir, `${name}.svg`);
     const real_filename = await renderTextWithScreenshot(name, fontSize, canvasWidth, canvasHeight, OUTPUT);
 
-    runAppleScriptForName(real_filename, name)
+    runAppleScriptForName(OUTPUT, name)
     .then(output => console.log("Success:", output))
     .catch(err => console.error("Error:", err));
 

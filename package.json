@@ -5,7 +5,8 @@
   "bin": "index.js",
   "scripts": {
     "start": "node index.js",
-    "build": "pkg -c package.json -t node16-win index.js"
+    "build": "pkg -c package.json -t node16-win index.js",
+    "build:macos": "pkg -c package.json -t node16-macos-x64 index.js"
   },
   "dependencies": {
     "bindings": "^1.5.0",

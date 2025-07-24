@@ -39,6 +39,10 @@ set screenHeight to item 4 of screenBounds
 set posX to (screenWidth - targetWidth) / 2
 set posY to (screenHeight - targetHeight) / 2
 
+tell application "System Events"
+	set visible of application process "xTool Creative Space" to true
+end tell
+
 -- Resize and reposition the XCS window
 tell application "System Events"
 	tell application process "xTool Creative Space"
@@ -187,7 +191,10 @@ do shell script "cliclick c:1520,143"
 delay 1
 `;
 
-    const tempFilePath = path.join(__dirname, `temp_${Date.now()}.scpt`);
+	const outputDir = path.join(process.cwd(), 'output'); // or /tmp
+	if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
+
+    const tempFilePath = path.join(outputDir, `temp_${Date.now()}.scpt`);
 
     // Step 1: Write the script to a temp file
     fs.writeFile(tempFilePath, scriptContent, (err) => {

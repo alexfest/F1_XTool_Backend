@@ -84,6 +84,6 @@ app.post('/api/print_excel', async (req, res) => {
   res.status(200).json({ message: 'Print jobs queued successfully' });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🖨️  Share A Coke backend running at http://localhost:${PORT}`);
 });
