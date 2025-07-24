@@ -57,13 +57,16 @@ app.post('/api/font-settings', (req, res) => {
 
 // API to add print job to queue
 app.post('/api/print', async (req, res) => {
-  const { name } = req.body;
+  const { first_name, second_name } = req.body;
 
-  if (!name) {
+  if (!first_name) {
     return res.status(400).json({ message: 'Name is required' });
   }
 
-  printQueue.push({ name });
+  printQueue.push({ name: first_name });
+
+  if(second_name)
+    printQueue.push({name: second_name});
   processQueue();
 
   res.status(200).json({ message: 'Print job queued successfully' });
