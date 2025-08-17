@@ -15,6 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Simple in-memory print queue
 const printQueue = [];
 let isPrinting = false;
+let isFirstPrinting = true;
 
 async function processQueue() {
   if (isPrinting || printQueue.length === 0) return;
@@ -23,14 +24,17 @@ async function processQueue() {
   const job = printQueue.shift();
 
   try {
-    await printLabel(job.name);
+    await printLabel(job.name, isFirstPrinting);
+    isFirstPrinting = false;     
     console.log(`✅ Printed label for ${job.name}`);
   } catch (error) {
     console.error(`❌ Failed to print label for ${job.name}`, error);
   }
 
-  isPrinting = false;
-  setTimeout(processQueue, 1000); // Wait 1s before next job
+  setTimeout(() => {
+    isPrinting = false;
+    processQueue();
+  }, 1000* 60); // Wait 1s before next job
 }
 
 // GET current settings

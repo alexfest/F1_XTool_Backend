@@ -80,7 +80,7 @@ async function renderTextWithScreenshot(TEXT, FONTSIZE, W, H, OUTPUT) {
   return OUTPUT;
 }
 
-async function generateTemplatePNG(name) {
+async function generateTemplatePNG(name, isFirstPrinting) {
   try {
     const settings = readFontSettings();
     const fontSize = parseInt(settings.fontSize);
@@ -109,7 +109,7 @@ async function generateTemplatePNG(name) {
     const OUTPUT   = path.join(outputDir, `${name}.svg`);
     const real_filename = await renderTextWithScreenshot(name, fontSize, canvasWidth, canvasHeight, OUTPUT);
 
-    runAppleScriptForName(OUTPUT, name)
+    runAppleScriptForName(OUTPUT, name, isFirstPrinting)
     .then(output => console.log("Success:", output))
     .catch(err => console.error("Error:", err));
 

@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 
-function runAppleScriptForName(fileName, name) {
+function runAppleScriptForName(fileName, name, isFirstPrinting) {
   return new Promise((resolve, reject) => {
     const scriptContent = `
 -- Simulate mouse click at 'Close' button
@@ -59,6 +59,10 @@ tell application "System Events"
 		-- Press Command + N (New)
 		-- keystroke "n" using {command down}
 		-- delay 3
+
+    ${
+      !isFirstPrinting ? 'do shell script "cliclick kp:enter \n delay 0.5' : ''
+    }
 
     -- Simulate mouse click at 'Center' of original Image
     do shell script "cliclick c:730,571"
