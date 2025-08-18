@@ -18,6 +18,7 @@ let isPrinting = false;
 let isFirstPrinting = true;
 
 async function processQueue() {
+
   if (isPrinting || printQueue.length === 0) return;
 
   isPrinting = true;

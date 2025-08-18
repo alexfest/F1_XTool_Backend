@@ -27,7 +27,7 @@ const OUT_TTF  = path.join(__dirname, '../fonts/CokeOutline.ttf');
 // ——————————
 
 
-const { runAppleScriptForName } = require('./appleScript');
+const { runAppleScriptForName, runAppleScriptForPreAction } = require('./appleScript');
 const { readFontSettings } = require('./settings');
 
 async function renderTextWithScreenshot(TEXT, FONTSIZE, W, H, OUTPUT) {
@@ -109,10 +109,11 @@ async function generateTemplatePNG(name, isFirstPrinting) {
     const OUTPUT   = path.join(outputDir, `${name}.svg`);
     const real_filename = await renderTextWithScreenshot(name, fontSize, canvasWidth, canvasHeight, OUTPUT);
 
-    runAppleScriptForName(OUTPUT, name, isFirstPrinting)
-    .then(output => console.log("Success:", output))
-    .catch(err => console.error("Error:", err));
+    await runAppleScriptForPreAction();
 
+    runAppleScriptForName(OUTPUT, name, isFirstPrinting)
+        .then(output => console.log("Success:", output))
+        .catch(err => console.error("Error:", err));
 
   } catch (error) {
     console.log(error);

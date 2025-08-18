@@ -2,27 +2,20 @@ const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 
-function runAppleScriptForName(fileName, name, isFirstPrinting) {
-  return new Promise((resolve, reject) => {
-    const scriptContent = `
--- Simulate mouse click at 'Close' button
--- do shell script "cliclick c:139,93"
--- delay 1
+const screenshot = require('screenshot-desktop');
+const Jimp = require("jimp");
 
--- Simulate mouse click at 'Do not Save'
--- do shell script "cliclick c:585,566"
--- delay 3
+screenshot().then(async (img) => {
+  const image = await Jimp.Jimp.read(img);
 
--- Set the paths
-set templatePath to "/Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/template.xcs"
-set pngPath to "Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/${name}.svg"
+  // Pick pixel at (100, 200)
+  const color = image.getPixelColor(1385, 550);
+  const rgba = Jimp.intToRGBA(color);
+  console.log(rgba);
+});
 
--- Step 1: Open the XCS template project
--- do shell script "open -a 'xTool Creative Space' " & quoted form of templatePath
-
--- Step 2: Wait for XCS to fully launch
--- delay 7
-
+function runAppleScriptForPreAction() {
+  const scriptContent = `
 -- Define the target size
 set targetWidth to 1440
 set targetHeight to 900
@@ -52,6 +45,18 @@ tell application "System Events"
 		set size of front window to {targetWidth, targetHeight}
 	end tell
 end tell
+`;
+
+  return getPromiseRunScript(scriptContent);
+
+}
+
+
+function runAppleScriptForName(fileName, name, isFirstPrinting) {
+  const scriptContent = `
+-- Set the paths
+set templatePath to "/Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/template.xcs"
+set pngPath to "Users/mcbookpro13/Desktop/coke/F1_XTool_Backend/output/${name}.svg"
 
 -- Step 3: Import the PNG using Cmd+Shift+I and typing the file path
 tell application "System Events"
@@ -59,10 +64,6 @@ tell application "System Events"
 		-- Press Command + N (New)
 		-- keystroke "n" using {command down}
 		-- delay 3
-
-    ${
-      !isFirstPrinting ? 'do shell script "cliclick kp:enter \n delay 0.5' : ''
-    }
 
     -- Simulate mouse click at 'Center' of original Image
     do shell script "cliclick c:730,571"
@@ -195,8 +196,14 @@ do shell script "cliclick c:1520,143"
 delay 1
 `;
 
-	const outputDir = path.join(process.cwd(), 'output'); // or /tmp
-	if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
+  return getPromiseRunScript(scriptContent);
+}
+
+function getPromiseRunScript(scriptContent) {
+  return new Promise((resolve, reject) => {
+
+	  const outputDir = path.join(process.cwd(), 'output'); // or /tmp
+	  if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
 
     const tempFilePath = path.join(outputDir, `temp_${Date.now()}.scpt`);
 
@@ -216,4 +223,4 @@ delay 1
   });
 }
 
-module.exports = { runAppleScriptForName };
+module.exports = { runAppleScriptForName, runAppleScriptForPreAction };
