@@ -2,18 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 
-const screenshot = require('screenshot-desktop');
-const Jimp = require("jimp");
-
-screenshot().then(async (img) => {
-  const image = await Jimp.Jimp.read(img);
-
-  // Pick pixel at (100, 200)
-  const color = image.getPixelColor(1385, 550);
-  const rgba = Jimp.intToRGBA(color);
-  console.log(rgba);
-});
-
 function runAppleScriptForPreAction() {
   const scriptContent = `
 -- Define the target size

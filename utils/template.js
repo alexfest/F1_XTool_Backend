@@ -4,6 +4,8 @@ const path = require('path');
 const { createCanvas } = require('canvas');
 const TextToSVG = require('text-to-svg');
 const { JSDOM } = require('jsdom');
+const screenshot = require('screenshot-desktop');
+const Jimp = require("jimp");
 
 // —— POLYFILL DOM FOR PAPER.JS ——
 const dom = new JSDOM(`<!DOCTYPE html><body></body>`);
@@ -110,6 +112,15 @@ async function generateTemplatePNG(name, isFirstPrinting) {
     const real_filename = await renderTextWithScreenshot(name, fontSize, canvasWidth, canvasHeight, OUTPUT);
 
     await runAppleScriptForPreAction();
+
+    screenshot().then(async (img) => {
+      const image = await Jimp.Jimp.read(img);
+    
+      // Pick pixel at (100, 200)
+      const color = image.getPixelColor(1500, 150);
+      const rgba = Jimp.intToRGBA(color);
+      console.log(rgba);
+    });
 
     runAppleScriptForName(OUTPUT, name, isFirstPrinting)
         .then(output => console.log("Success:", output))
