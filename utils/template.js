@@ -123,10 +123,13 @@ async function generateTemplatePNG(name, isFirstPrinting) {
       // Pick pixel at (100, 200)
       const color = image.getPixelColor(1500 * 2, 150 * 2);
       const rgba = Jimp.intToRGBA(color);
+      console.log(rgba);
 
       if(rgba.r === 92 && rgba.g === 186 && rgba.b === 84) {
         await runAppleScriptForClosePrinting();
+        console.log('runAppleScriptForClosePrinting');
       }
+      console.log('runAppleScriptForName');
       
       runAppleScriptForName(OUTPUT, name, isFirstPrinting)
         .then(output => console.log("Success:", output))
