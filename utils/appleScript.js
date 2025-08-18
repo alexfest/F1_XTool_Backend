@@ -2,6 +2,15 @@ const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 
+function runAppleScriptForClosePrinting() {
+  const scriptContent = `
+do shell script "cliclick c:3000,300"
+delay 1
+  `;
+
+  return getPromiseRunScript(scriptContent);
+}
+
 function runAppleScriptForPreAction() {
   const scriptContent = `
 -- Define the target size
@@ -211,4 +220,4 @@ function getPromiseRunScript(scriptContent) {
   });
 }
 
-module.exports = { runAppleScriptForName, runAppleScriptForPreAction };
+module.exports = { runAppleScriptForName, runAppleScriptForPreAction, runAppleScriptForClosePrinting };

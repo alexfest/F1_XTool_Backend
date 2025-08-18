@@ -29,7 +29,11 @@ const OUT_TTF  = path.join(__dirname, '../fonts/CokeOutline.ttf');
 // ——————————
 
 
-const { runAppleScriptForName, runAppleScriptForPreAction } = require('./appleScript');
+const { 
+  runAppleScriptForName, 
+  runAppleScriptForPreAction,
+  runAppleScriptForClosePrinting
+} = require('./appleScript');
 const { readFontSettings } = require('./settings');
 
 async function renderTextWithScreenshot(TEXT, FONTSIZE, W, H, OUTPUT) {
@@ -117,14 +121,17 @@ async function generateTemplatePNG(name, isFirstPrinting) {
       const image = await Jimp.Jimp.read(img);
     
       // Pick pixel at (100, 200)
-      const color = image.getPixelColor(1500, 150);
+      const color = image.getPixelColor(1500 * 2, 150 * 2);
       const rgba = Jimp.intToRGBA(color);
-      console.log(rgba);
-    });
 
-    runAppleScriptForName(OUTPUT, name, isFirstPrinting)
+      if(rgba.r === 92 && rgba.g === 186 && rgba.b === 84) {
+        await runAppleScriptForClosePrinting();
+      }
+      
+      runAppleScriptForName(OUTPUT, name, isFirstPrinting)
         .then(output => console.log("Success:", output))
         .catch(err => console.error("Error:", err));
+    });
 
   } catch (error) {
     console.log(error);
